@@ -24,6 +24,7 @@ namespace Disorder.Views.Pages;
 /// </summary>
 public sealed partial class Export : Page
 {
+    public static string dict_name;
     public Export()
     {
         this.InitializeComponent();
@@ -64,6 +65,7 @@ public sealed partial class Export : Page
         }
         else
         {
+            dict_name = dict.SelectedItem.ToString();
             MainWindow.contentframe.NavigateToType(typeof(ShowList), null, null);
             AppWindow.GetFromWindowId(MainWindow.myWndId).Resize(new Windows.Graphics.SizeInt32(Convert.ToInt32(MainWindow.target.Width * 1.5), Convert.ToInt32(MainWindow.target.Height * 1.6)));
         }

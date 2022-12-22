@@ -10,13 +10,27 @@
 
     <StackPanel>
         <AppBarButton Click="back" Icon="Back" Height="50" Width="50" Margin="5,5,0,0"></AppBarButton>
-        <StackPanel>
-            <CalendarView></CalendarView>
-        </StackPanel>
-        <StackPanel>
-            <TextBlock Text="当日所背单词：" Margin="10,0,0,0" FontSize="18"></TextBlock>
-            <ListView Background="Aqua" Margin="20" x:Name="word_ex" Height="200" Width="250"></ListView>
-            <Button Margin="20,0,0,0" Width="250" Height="80"></Button>
+        <StackPanel Orientation="Horizontal" Margin="30,0,0,0">
+            <StackPanel>
+                <CalendarView
+                    x:Name="cal"
+                   SelectedDatesChanged="cal_SelectedDatesChanged"
+                SelectionMode="Multiple"
+                IsGroupLabelVisible="True"
+                IsOutOfScopeEnabled="True"
+                Language="zh"
+                CalendarIdentifier="GregorianCalendar" />
+            </StackPanel>
+            <StackPanel Margin="10,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="所选日期单词列表：" Margin="10,0,0,0" FontSize="18"></TextBlock>
+                    <TextBlock Foreground="Gray" Margin="5" Text="(单词个数:"></TextBlock>
+                    <TextBlock Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" Margin="5" Text="0" x:Name="count"></TextBlock>
+                    <TextBlock Foreground="Gray" Margin="5" Text="个)"></TextBlock>
+                </StackPanel>
+                <ListView x:Name="lv"  Margin="20" Height="200" Width="280"></ListView>
+                <Button FontSize="16" Content="生成乱序检测卷" Margin="20,0,0,0" Width="280" Height="80"></Button>
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </Page>
