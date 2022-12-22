@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="Disorder.Views.Pages.Login"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Disorder.Views.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Black">
+
+    <StackPanel Orientation="Horizontal">
+        <Button Click="start_bcz" Margin="35,10,10,10" Height="180" Width="180">
+            <Canvas>
+                <Image Canvas.Top="-60" Canvas.Left="-60" Source="../../Assets/bcz.png" Opacity="0.1" Height="120" Width="120"></Image>
+                <TextBlock Canvas.Top="-10" Canvas.Left="-70" FontSize="20" Text="从百词斩中导出"></TextBlock>
+            </Canvas>
+        </Button>
+        <Button Click="start_other" Margin="10" Height="180" Width="180">
+            <Canvas>
+                <Image Canvas.Top="-70" Canvas.Left="-80" Source="../../Assets/自定义.png" Opacity="0.1" Height="150" Width="150"></Image>
+                <TextBlock Canvas.Top="-10" Canvas.Left="-50" FontSize="20" Text="自定义来源"></TextBlock>
+            </Canvas>
+        </Button>
+    </StackPanel>
+</Page>
