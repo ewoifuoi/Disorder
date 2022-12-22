@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
+using Disorder.DAL;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -109,5 +110,34 @@ public sealed partial class Options : Page
             isCancel = true;
         }
 
+    }
+
+    private void Next(object sender, RoutedEventArgs e)
+    {
+        if(box1.Text == "")
+        {
+            ShowError("请输入lookup.db的路径");
+        }
+        else if(box2 == null)
+        {
+            ShowError("请输入baicizhantopicproblem.db的路径");
+        }
+        DataAccess.Init(box1.Text, box2.Text);
+        MainWindow.contentframe.NavigateToType(typeof(Export), null, null);
+        AppWindow.GetFromWindowId(MainWindow.myWndId).Resize(new Windows.Graphics.SizeInt32(Convert.ToInt32(MainWindow.target.Width * 1.8), Convert.ToInt32(MainWindow.target.Height * 1.8)));
+    }
+
+    private async void ShowError(string s)
+    {
+        ContentDialog dialog = new ContentDialog();
+
+        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+        dialog.XamlRoot = this.XamlRoot;
+        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+        dialog.Title = "提示";
+        dialog.Content = s;
+        dialog.PrimaryButtonText = "确定";
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        var result = await dialog.ShowAsync();
     }
 }

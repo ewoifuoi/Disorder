@@ -32,7 +32,7 @@
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                 <HyperlinkButton Margin="40,0,0,0" Content="如何获取相应数据库？" Opacity="0.8"></HyperlinkButton>
-                <Button Margin="50,20,10,10" Width="150" Height="65" Content="下一步" FontSize="16"></Button>
+                <Button Click="Next" Margin="50,20,10,10" Width="150" Height="65" Content="下一步" FontSize="16"></Button>
             </StackPanel>
         </StackPanel>
     </StackPanel>
