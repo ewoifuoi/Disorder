@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using Disorder.DAL;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
@@ -13,8 +16,11 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Spire.Pdf;
+using Spire.Pdf.Graphics;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.Pickers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,6 +31,31 @@ namespace Disorder.Views.Pages;
 /// </summary>
 public sealed partial class ShowList : Page
 {
+
+    private static List<List<string>> GetDisruptedItems(List<List<string>> source)
+    {
+        List<List<string>> temp = new List<List<string>>();
+        for (int i = 0; i < source.Count; i++)
+        {
+            temp.Add(source[i]);
+        }
+        Random rand = new Random(DateTime.Now.Millisecond);
+        for (int i = 0; i < temp.Count; i++)
+        {
+            for (int j = i + 1; j < temp.Count; j++)
+            {
+
+                if (rand.Next(2) == 1)
+                {
+                    List<string> t = temp[i];
+                    temp[i] = temp[j];
+                    temp[j] = t;
+                }
+            }
+        }
+        return temp;
+    }
+
     List<List<string>> res;
     public ShowList()
     {
@@ -84,5 +115,125 @@ public sealed partial class ShowList : Page
             lv.Items.Add(tb);
         }
         count.Text = res.Count.ToString();
+    }
+
+
+    public string filePath = "";
+    public async void SaveTXTFile(string a, string b)
+    {
+        var savePicker = new FileSavePicker();
+        WinRT.Interop.InitializeWithWindow.Initialize(savePicker, MainWindow.hWnd);
+        savePicker.SuggestedStartLocation =
+            Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+        savePicker.FileTypeChoices.Add(a, new List<string>() { b });
+        Random rnd = new Random();
+        savePicker.SuggestedFileName = "乱序单词检测卷" + DateTime.Now.ToString("MM-dd-ffffff");
+
+        // 打开文件选择对话框
+        var file = await savePicker.PickSaveFileAsync();
+        if (file != null)
+        {
+            filePath = file.Path; // 暂存绝对路径
+            
+            isok = true;
+            canceled = false;
+        }
+        else canceled = true;
+
+    }
+    public bool isok = false;
+    private bool canceled = false;
+
+    private async void Button_Click(object sender, RoutedEventArgs e)
+    {
+        ContentDialog dialog = new ContentDialog();
+
+        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+        dialog.XamlRoot = this.XamlRoot;
+        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+        dialog.Title = "提示";
+        dialog.Content = "该操作将生成两个pdf文件";
+
+        dialog.PrimaryButtonText = "确定";
+        dialog.CloseButtonText = "取消";
+
+        dialog.DefaultButton = ContentDialogButton.Primary;
+        var result = await dialog.ShowAsync();
+        BackgroundWorker worker = new BackgroundWorker();
+        PdfDocument doc = new PdfDocument();
+        PdfDocument doc2 = new PdfDocument();
+        bool isfirst = true;
+        if (result == ContentDialogResult.Primary)
+        {
+            isok = false;
+            worker.Dispose();
+
+            worker.DoWork += (s, e) => {
+                //Some work...
+                SaveTXTFile("PDF文件", ".pdf");
+
+                while (isok == false) { if (canceled) { break; } Thread.Sleep(100); };
+            };
+            worker.RunWorkerCompleted += (s, e) => {
+                if (!canceled)
+                {
+                    int i = 0;
+                    while(i < res.Count)
+                    {
+                        PdfPageBase page = doc.Pages.Add();
+                        PdfPageBase page2 = doc2.Pages.Add();
+                        PdfTrueTypeFont pdfTrueTypeFont = new PdfTrueTypeFont(new Font("Microsoft Yahei", 10), true);
+                        PdfTrueTypeFont pdfTrueTypeFont0 = new PdfTrueTypeFont(new Font("Microsoft Yahei", 25), true);
+                        PdfTrueTypeFont pdfTrueTypeFont1 = new PdfTrueTypeFont(new Font("Microsoft Yahei", 8), true);
+                        PdfSolidBrush pdfSolidBrush = new PdfSolidBrush(Color.Black);
+                        string ddtt = DateTime.Now.ToString("ffffff");
+                        res = GetDisruptedItems(res);
+                        string s1 = ""; string s2 = ""; string s3 = ""; string s4 = "";
+                        for (int j = 0; j < 50 && i < res.Count; i++,j++)
+                        {
+                            if (j <= 24)
+                            {
+                                s1 += (i + 1).ToString() + ". " + (res[i][1].Length <= 15 ? res[i][1] : res[i][1].Substring(0, 15)) + "\n\n";
+                                s3 += (i + 1).ToString() + ". " + res[i][0] + "\n\n";
+                            }
+                            else
+                            {
+                                s2 += (i + 1).ToString() + ". " + (res[i][1].Length <= 15 ? res[i][1] : res[i][1].Substring(0, 15)) + "\n\n";
+                                s4 += (i + 1).ToString() + ". " + res[i][0] + "\n\n";
+                            }
+                        }
+                        if(isfirst)
+                        {
+                            page.Canvas.DrawString("编号：" + ddtt, pdfTrueTypeFont1, PdfBrushes.Black, new RectangleF(400, 10, page.GetClientSize().Width, page.GetClientSize().Height));
+                            page.Canvas.DrawString("百词斩乱序单词拼写检测卷(汉译英)", pdfTrueTypeFont0, PdfBrushes.Black, new RectangleF(70, 30, page.GetClientSize().Width, page.GetClientSize().Height));
+                            page.Canvas.DrawString("生成日期: " + DateTime.Now.ToString("yyyy-MM-dd dddd"), pdfTrueTypeFont, PdfBrushes.Black, new RectangleF(300, 70, page.GetClientSize().Width, page.GetClientSize().Height));
+                            page2.Canvas.DrawString("编号：" + ddtt, pdfTrueTypeFont1, PdfBrushes.Black, new RectangleF(400, 10, page.GetClientSize().Width, page.GetClientSize().Height));
+                            page2.Canvas.DrawString("百词斩乱序单词拼写检测卷(英译汉)", pdfTrueTypeFont0, PdfBrushes.Black, new RectangleF(70, 30, page2.GetClientSize().Width, page2.GetClientSize().Height));
+                            page2.Canvas.DrawString("生成日期: " + DateTime.Now.ToString("yyyy-MM-dd dddd"), pdfTrueTypeFont, PdfBrushes.Black, new RectangleF(300, 70, page.GetClientSize().Width, page2.GetClientSize().Height));
+                            isfirst = false;
+                        }
+                        page.Canvas.DrawString(s1, pdfTrueTypeFont, PdfBrushes.Black, new RectangleF(0, 100, page.GetClientSize().Width, page.GetClientSize().Height));
+                        page.Canvas.DrawString(s2, pdfTrueTypeFont, PdfBrushes.Black, new RectangleF(page.GetClientSize().Width / 2 + 2f, 100, page.GetClientSize().Width, page.GetClientSize().Height));
+                        page2.Canvas.DrawString(s3, pdfTrueTypeFont, PdfBrushes.Black, new RectangleF(0, 100, page2.GetClientSize().Width / 2 - 2f, page2.GetClientSize().Height));
+                        page2.Canvas.DrawString(s4, pdfTrueTypeFont, PdfBrushes.Black, new RectangleF(page2.GetClientSize().Width / 2 + 2f, 100, page2.GetClientSize().Width / 2, page2.GetClientSize().Height));
+
+                    }
+                    doc.SaveToFile(filePath + "(汉译英).pdf");
+                    doc.Close();
+                    doc2.SaveToFile(filePath + "(英译汉).pdf");
+                    doc2.Close();
+
+                }
+                else
+                {
+                    canceled = false;
+                }
+            };
+            worker.RunWorkerAsync();
+
+        }
+        //创建PdfDocument类的对象，并加载PDF文档
+
+
     }
 }

@@ -29,7 +29,7 @@
                     <TextBlock Foreground="Gray" Margin="5" Text="个)"></TextBlock>
                 </StackPanel>
                 <ListView x:Name="lv"  Margin="20" Height="200" Width="280"></ListView>
-                <Button FontSize="16" Content="生成乱序检测卷" Margin="20,0,0,0" Width="280" Height="80"></Button>
+                <Button Click="Button_Click" FontSize="16" Content="生成乱序检测卷" Margin="20,0,0,0" Width="280" Height="80"></Button>
             </StackPanel>
         </StackPanel>
     </StackPanel>
