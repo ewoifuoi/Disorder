@@ -33,6 +33,8 @@ public sealed partial class Options : Page
     public Options()
     {
         this.InitializeComponent();
+        box1.Text = DataAccess.dbpath1;
+        box2.Text = DataAccess.dbpath2;
     }
 
     private void back(object sender, RoutedEventArgs e)
@@ -118,13 +120,24 @@ public sealed partial class Options : Page
         {
             ShowError("请输入lookup.db的路径");
         }
-        else if(box2 == null)
+        else if(box2.Text == "")
         {
             ShowError("请输入baicizhantopicproblem.db的路径");
         }
-        DataAccess.Init(box1.Text, box2.Text);
-        MainWindow.contentframe.NavigateToType(typeof(Export), null, null);
-        AppWindow.GetFromWindowId(MainWindow.myWndId).Resize(new Windows.Graphics.SizeInt32(Convert.ToInt32(MainWindow.target.Width * 1.8), Convert.ToInt32(MainWindow.target.Height * 1.8)));
+        else
+        {
+            if (DataAccess.Init(box1.Text, box2.Text) && Convert.ToInt32(DataAccess.Query("select count(*)\r\nfrom history.sqlite_master\r\nwhere name like 'ts_learn_offline_dotopic_sync_ids%';")[0][0]) > 0)
+            {
+                MainWindow.contentframe.NavigateToType(typeof(Export), null, null);
+                AppWindow.GetFromWindowId(MainWindow.myWndId).Resize(new Windows.Graphics.SizeInt32(Convert.ToInt32(MainWindow.target.Width * 0.9), Convert.ToInt32(MainWindow.target.Height * 1.8)));
+            }
+            else
+            {
+                ShowError("数据库文件有误");
+            }
+            
+        }
+        
     }
 
     private async void ShowError(string s)

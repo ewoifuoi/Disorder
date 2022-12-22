@@ -13,19 +13,19 @@
         <StackPanel>
             <StackPanel Margin="30,20,20,20">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="Gray" Width="130" TextWrapping="WrapWholeWords" Margin="10,18,0,10" Text="总词表数据库路径:"></TextBlock>
+                    <TextBlock Foreground="LightGray" Width="130" TextWrapping="WrapWholeWords" Margin="10,18,0,10" Text="总词表数据库路径:"></TextBlock>
                     <TextBlock Foreground="DimGray" Margin="0,18,0,10" Text="（名为：lookup.db）"></TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="box1" Margin="20,10,0,10" Height="30" Width="200" Foreground="DimGray"></TextBox>
+                    <TextBox x:Name="box1" Margin="20,10,0,10" Height="30" Width="200" IsEnabled="False"></TextBox>
                     <Button Click="Open1" Margin="10,12,10,10" Content="..." Height="32" Width="40"></Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Foreground="Gray" Width="130" TextWrapping="Wrap" Margin="10,18,0,10" Text="用户记录数据库路径:"></TextBlock>
+                    <TextBlock Foreground="LightGray" Width="130" TextWrapping="Wrap" Margin="10,18,0,10" Text="用户记录数据库路径:"></TextBlock>
                     <TextBlock Foreground="DimGray" Margin="0,18,0,10" Text="（名为：baicizhantopicproblem.db）"></TextBlock>
                 </StackPanel>
                 <StackPanel  Orientation="Horizontal">
-                    <TextBox x:Name="box2" Margin="20,10,0,10" Height="30" Width="200" Foreground="DimGray"></TextBox>
+                    <TextBox x:Name="box2" Margin="20,10,0,10" Height="30" Width="200" IsEnabled="False"></TextBox>
                     <Button Click="Open2" Margin="10,12,10,10" Content="..." Height="32" Width="40"></Button>
                 </StackPanel>
             </StackPanel>

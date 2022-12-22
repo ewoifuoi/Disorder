@@ -17,6 +17,7 @@
     <None Remove="Views\Pages\Export.xaml" />
     <None Remove="Views\Pages\Login.xaml" />
     <None Remove="Views\Pages\Options.xaml" />
+    <None Remove="Views\Pages\ShowList.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +54,11 @@
     <Content Update="Assets\自定义.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\Pages\ShowList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\Pages\Export.xaml">

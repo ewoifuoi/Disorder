@@ -11,8 +11,9 @@ public class DataAccess
 {
     public static string dbpath1;
     public static string dbpath2;
-    public static void Init(string dbpaht1, string dbpath2)
+    public static bool Init(string dbpaht1, string dbpath2)
     {
+        if (DataAccess.dbpath1 == dbpaht1 && DataAccess.dbpath2 == dbpath2) return true;
         DataAccess.dbpath1 = dbpaht1;
         DataAccess.dbpath2 = dbpath2;
         using (SqliteConnection db =
@@ -29,17 +30,19 @@ public class DataAccess
             }
             catch
             {
-                
+                return false;
             }
+
             db.Close();
         }
+        return true;
     }
 
-    public static List<List<string>> Query(string sql, string dbpath)
+    public static List<List<string>> Query(string sql)
     {
         List<List<string>> entries = new List<List<string>>();
         using (SqliteConnection db =
-           new SqliteConnection($"Filename={dbpath}"))
+           new SqliteConnection($"Filename={dbpath1}"))
         {
             db.Open();
 
