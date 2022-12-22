@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Disorder (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Disorder (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
