@@ -1,7 +1,7 @@
 # Disorder
 > 将百词斩中每日背过单词导出，生成乱序拼写检测卷！
 
-![](0.png)
+![](5.png)
 
 #### 注： 本工具通过百词斩的用户数据库获取单词，~~而非使用爬虫和后端接口~~，因此需要使用者手动获取lookup.db,和baicizhantopicproblem.db数据库
 [如何获得相应数据库](https://github.com/ewoifuoi/Disorder/issues/1)
