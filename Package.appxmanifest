@@ -9,7 +9,7 @@
   <Identity
     Name="406dada0-0d72-47ed-bf4f-54cb4a6c04b1"
     Publisher="CN=ewoifuoi"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
 
   <Properties>
     <DisplayName>Disorder</DisplayName>

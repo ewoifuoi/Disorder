@@ -164,7 +164,7 @@ public sealed partial class ShowList : Page
                 //Some work...
                 SaveTXTFile("PDF文件", ".pdf");
 
-                while (isok == false) { if (canceled) { break; } Thread.Sleep(100); };
+                while (isok == false) { if (canceled) { break;canceled = false; } Thread.Sleep(100); };
             };
             worker.RunWorkerCompleted += (s, e) => {
                 if (!canceled)
@@ -212,7 +212,7 @@ public sealed partial class ShowList : Page
                     }
                     doc.SaveToFile(filePath);
                     doc.Close();
-                    doc2.SaveToFile(filePath.Substring(0,11) + "(英译汉)"+ddtt+".pdf");
+                    doc2.SaveToFile(filePath.Substring(0,filePath.Length-15) + "(英译汉)"+ddtt+".pdf");
                     doc2.Close();
 
                 }
@@ -222,8 +222,19 @@ public sealed partial class ShowList : Page
                 }
             };
             worker.RunWorkerAsync();
-
+            
         }
+        ContentDialog dialog2 = new ContentDialog();
+        ContentDialogResult result2;
+
+        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+        dialog2.XamlRoot = this.XamlRoot;
+        dialog2.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+        dialog2.Title = "生成成功！";
+        dialog2.PrimaryButtonText = "确定";
+        dialog2.DefaultButton = ContentDialogButton.Primary;
+        result2 = await dialog2.ShowAsync();
+        
         //创建PdfDocument类的对象，并加载PDF文档
 
 
