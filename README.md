@@ -4,7 +4,7 @@
 ![](0.png)
 
 #### 注： 本工具通过百词斩的用户数据库获取单词，~~而非使用爬虫和后端接口~~，因此需要使用者手动获取lookup.db,和baicizhantopicproblem.db数据库
-[如何获得相应数据库]()
+[如何获得相应数据库](https://github.com/ewoifuoi/Disorder/issues/1)
 
 # Features
 - 自动查询相应数据库,可做到可视化分别查询不同词书的已背单词
