@@ -127,7 +127,7 @@ public sealed partial class ShowList : Page
             Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
         savePicker.FileTypeChoices.Add(a, new List<string>() { b });
         Random rnd = new Random();
-        savePicker.SuggestedFileName = "乱序单词检测卷" + DateTime.Now.ToString("MM-dd-ffffff");
+        savePicker.SuggestedFileName = "乱序单词检测卷(汉译英)" + ddtt;
 
         // 打开文件选择对话框
         var file = await savePicker.PickSaveFileAsync();
@@ -143,7 +143,7 @@ public sealed partial class ShowList : Page
     }
     public bool isok = false;
     private bool canceled = false;
-
+    public string ddtt;
     private async void Button_Click(object sender, RoutedEventArgs e)
     {
         ContentDialog dialog = new ContentDialog();
@@ -163,6 +163,7 @@ public sealed partial class ShowList : Page
         PdfDocument doc = new PdfDocument();
         PdfDocument doc2 = new PdfDocument();
         bool isfirst = true;
+        ddtt = DateTime.Now.ToString("ffffff");
         if (result == ContentDialogResult.Primary)
         {
             isok = false;
@@ -186,7 +187,7 @@ public sealed partial class ShowList : Page
                         PdfTrueTypeFont pdfTrueTypeFont0 = new PdfTrueTypeFont(new Font("Microsoft Yahei", 25), true);
                         PdfTrueTypeFont pdfTrueTypeFont1 = new PdfTrueTypeFont(new Font("Microsoft Yahei", 8), true);
                         PdfSolidBrush pdfSolidBrush = new PdfSolidBrush(Color.Black);
-                        string ddtt = DateTime.Now.ToString("ffffff");
+                        
                         res = GetDisruptedItems(res);
                         string s1 = ""; string s2 = ""; string s3 = ""; string s4 = "";
                         for (int j = 0; j < 50 && i < res.Count; i++,j++)
@@ -218,9 +219,9 @@ public sealed partial class ShowList : Page
                         page2.Canvas.DrawString(s4, pdfTrueTypeFont, PdfBrushes.Black, new RectangleF(page2.GetClientSize().Width / 2 + 2f, 100, page2.GetClientSize().Width / 2, page2.GetClientSize().Height));
 
                     }
-                    doc.SaveToFile(filePath + "(汉译英).pdf");
+                    doc.SaveToFile(filePath);
                     doc.Close();
-                    doc2.SaveToFile(filePath + "(英译汉).pdf");
+                    doc2.SaveToFile(filePath.Substring(0,11) + "(英译汉)"+ddtt+".pdf");
                     doc2.Close();
 
                 }
