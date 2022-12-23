@@ -50,6 +50,7 @@ private static List<List<string>> GetDisruptedItems(List<List<string>> source)
     return temp;
 }
 ```
+![QQ截图20221223142500](https://user-images.githubusercontent.com/47176322/209283470-64b4fb1f-fba3-4fed-bc93-1d6a6d2eb35e.png)
 
 ![](1.png)
 ![](2.png)
