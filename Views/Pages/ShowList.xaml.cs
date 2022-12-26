@@ -170,7 +170,8 @@ public sealed partial class ShowList : Page
                 if (!canceled)
                 {
                     int i = 0;
-                    while(i < res.Count)
+                    res = GetDisruptedItems(res);
+                    while (i < res.Count)
                     {
                         PdfPageBase page = doc.Pages.Add();
                         PdfPageBase page2 = doc2.Pages.Add();
@@ -178,8 +179,6 @@ public sealed partial class ShowList : Page
                         PdfTrueTypeFont pdfTrueTypeFont0 = new PdfTrueTypeFont(new Font("Microsoft Yahei", 25), true);
                         PdfTrueTypeFont pdfTrueTypeFont1 = new PdfTrueTypeFont(new Font("Microsoft Yahei", 8), true);
                         PdfSolidBrush pdfSolidBrush = new PdfSolidBrush(Color.Black);
-                        
-                        res = GetDisruptedItems(res);
                         string s1 = ""; string s2 = ""; string s3 = ""; string s4 = "";
                         for (int j = 0; j < 50 && i < res.Count; i++,j++)
                         {
@@ -214,7 +213,6 @@ public sealed partial class ShowList : Page
                     doc.Close();
                     doc2.SaveToFile(filePath.Substring(0,filePath.Length-15) + "(英译汉)"+ddtt+".pdf");
                     doc2.Close();
-
                 }
                 else
                 {
